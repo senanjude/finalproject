@@ -87,14 +87,6 @@ def check_temp(url):
             count += 1
     return count
 
-
-
-
-
-
-
-
-
 import re
 from functools import partial
 import pandas as pd
