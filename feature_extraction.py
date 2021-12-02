@@ -4,9 +4,10 @@ import datetime
 import requests
 import re
 from functools import partial
+from urllib.parse import urlparse
 URL_REGEX = ";|\/|\?|:|@|&|=|\+|$|,|-|\."
+DOMAIN_FILE = "public_suffix_list.dat.txt"
 
-TEMPING_WORDS = [“money”,”discount”]
 
 
 def validate_url(url):
@@ -18,7 +19,7 @@ def url_length(url):
 def get_token(url):
     return list(filter(lambda x:x != None and x != "",re.split(URL_REGEX, url)))
 
-tokens = get_token(url)
+#tokens = get_token(url)
 
 def max_token_length(tokens):
     maximum = 0
@@ -83,12 +84,25 @@ def check_info(url):
 def check_js(url):
     return ".js" in url
 
-def check_temp(url):
+def check_temp(tokens):
     count = 0
-    url = url.lower()
-    for word in TEMPING_WORDS:
-        if word in url:
-            count += 1
+    with open("tempting_words.txt") as file:
+      tempting_words = file.readlines()
+      tempting_words = [line.rstrip() for line in tempting_words]
+    
+    for token in tokens:
+          for tempting_word in tempting_words:
+                if token.lower() == tempting_word.lower():
+                      count += 1
+    with open("offensive_words.txt") as file:
+      offensive_words = file.readlines()
+      offensive_words = [line.rstrip() for line in offensive_words]
+    
+    for token in tokens:
+          for offensive_word in offensive_words:
+                if token.lower() == offensive_word.lower():
+                      count += 1
+
     return count
 
 #input assumes that url starts with http:// or https://
@@ -160,7 +174,11 @@ def get_len_query(url):
 def get_ratio_url_to_path(url):
   o = urlparse(url)
   path = o.path
-  return len(url) / len(path)
+  try:
+    k = len(url) / len(path)
+    return k
+  except:
+    return -1
 
 def has_shorten(url):
   f = open('tinyurl.txt','r')
