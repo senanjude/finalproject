@@ -1,0 +1,11 @@
+benign
+https://www.nitc.ac.in
+https://eduserver.nitc.ac.in
+https://www.youtube.com
+https://www.twiter.com
+
+malicious
+https://cowardly-monkey-30.loca.lt/brglineon/
+https://nity.fr/go-xj7sHsFm
+https://leclientvocal-7118023-8849-6918.mystrikingly.com/
+https://h5.hiflyk71114.top/
